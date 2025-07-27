@@ -67,7 +67,7 @@ go install github.com/sensepost/gowitness@latest
 
 4. Download and install R3CON:
 ```bash
-curl -o /usr/local/bin/r3con https://raw.githubusercontent.com/Durgxsh/R3CON/main/R3CON.sh
+curl -o /usr/local/bin/r3con https://raw.githubusercontent.com/Durgesh2202/R3CON/main/R3CON.sh
 chmod +x /usr/local/bin/r3con
 ```
 
