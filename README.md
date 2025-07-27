@@ -204,4 +204,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-Made with ❤️ by [Durgxsh](https://github.com/Durgxsh)
+Made with ❤️ by [Durgesh2202](https://github.com/Durgesh2202)
