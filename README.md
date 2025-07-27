@@ -98,7 +98,7 @@ All results are organized in a folder named `Recon-domain-date` in your current 
 
 ## Sample Output
 
-
+```
     ____ _____ __________  _   __
    / __ \__  // ____/ __ \/ | / /
   / /_/ //_ </ /   / / / /  |/ /
@@ -135,11 +135,23 @@ All results are organized in a folder named `Recon-domain-date` in your current 
     Parameter URLs found: 35947
     ✔ Parameter URLs stored at: Recon-httpbin.org-27-07-2025/params.txt
 [5] Extracting archived JS URLs from wayback...
-    
+    JS files found: 222
+    ✔ Archived JS files stored at: Recon-httpbin.org-27-07-2025/js-files.txt
+[6] Extracting live JS files from live hosts using getJS...
+/flasgger_static/swagger-ui-bundle.js
+/flasgger_static/swagger-ui-standalone-preset.js
+/flasgger_static/lib/jquery.min.js
+/flasgger_static/swagger-ui-bundle.js
+/flasgger_static/swagger-ui-standalone-preset.js
+/flasgger_static/lib/jquery.min.js
+    Live JS files found: 6
+    ✔ Live JS files stored at: Recon-httpbin.org-27-07-2025/livejs.txt
+[7] Running nuclei vulnerability scan...
+
 [...]
 
 Vulnerability Summary:
-•  vulnerabilities found in live hosts
+• 6 vulnerabilities found in live hosts
       2 [httpbin-xss] [http] [high]
       2 [httpbin-open-redirect] [http] [medium]
       2 [httpbin-contenttype-xss] [http] [medium]
