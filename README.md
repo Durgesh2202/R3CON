@@ -25,7 +25,7 @@
 
 ### One-Line Installation
 ```bash
-curl -s https://raw.githubusercontent.com/Durgxsh/R3CON/main/install.sh | sudo bash
+curl -s https://raw.githubusercontent.com/Durgesh2202/R3CON/main/install.sh | sudo bash
 ```
 
 ### Manual Installation
