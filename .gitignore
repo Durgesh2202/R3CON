@@ -1,0 +1,16 @@
+# Ignore R3CON output directories
+Recon-*
+
+# Ignore temporary files
+*.tmp
+*~
+
+# Ignore common editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore system files
+.DS_Store
+Thumbs.db

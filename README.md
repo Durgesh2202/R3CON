@@ -69,6 +69,8 @@ go install github.com/sensepost/gowitness@latest
 ```bash
 curl -o /usr/local/bin/r3con https://raw.githubusercontent.com/Durgesh2202/R3CON/main/R3CON.sh
 chmod +x /usr/local/bin/r3con
+# Fix potential line ending issues
+sed -i 's/\r$//' /usr/local/bin/r3con
 ```
 
 ## Features
@@ -167,6 +169,28 @@ Vulnerability Summary:
 - **gowitness**: Website screenshot utility
 
 ## Troubleshooting
+
+### R3CON Command Not Found After Installation
+
+If you see "command not found" after installation, the Go tools may not be in your PATH:
+
+1. **Restart your terminal** or open a new terminal session
+2. **Or reload your shell profile:**
+   ```bash
+   source ~/.bashrc
+   ```
+3. **Or manually add Go tools to PATH:**
+   ```bash
+   echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+   echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+4. **Verify installation:**
+   ```bash
+   which r3con
+   which subfinder
+   ```
 
 ### Rate Limiting Issues
 If you encounter rate limiting issues, try using AnonSurf or a VPN:
