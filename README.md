@@ -69,6 +69,8 @@ go install github.com/sensepost/gowitness@latest
 ```bash
 curl -o /usr/local/bin/r3con https://raw.githubusercontent.com/Durgesh2202/R3CON/main/R3CON.sh
 chmod +x /usr/local/bin/r3con
+# Fix potential line ending issues
+sed -i 's/\r$//' /usr/local/bin/r3con
 ```
 
 ## Features
