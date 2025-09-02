@@ -43,10 +43,37 @@ apt install -y curl wget git ruby python3 python3-pip chromium-browser golang-go
 
 # Step 2: Set up Go environment
 echo -e "\n${CYAN}${BOLD}[2/5] Setting up Go environment...${NC}"
+
+# Set up GOPATH and PATH for all users
 echo 'export GOPATH=$HOME/go' >> /etc/profile
 echo 'export PATH=$PATH:$GOPATH/bin' >> /etc/profile
-source /etc/profile
-mkdir -p $HOME/go/bin
+
+# Also set up for current user's shell profiles
+USER_HOME=$(eval echo ~${SUDO_USER:-$USER})
+if [ -n "$SUDO_USER" ]; then
+    # Running with sudo, set up for the actual user
+    echo 'export GOPATH=$HOME/go' >> "$USER_HOME/.bashrc"
+    echo 'export PATH=$PATH:$GOPATH/bin' >> "$USER_HOME/.bashrc"
+    
+    # Set up for zsh if it exists
+    if [ -f "$USER_HOME/.zshrc" ]; then
+        echo 'export GOPATH=$HOME/go' >> "$USER_HOME/.zshrc"
+        echo 'export PATH=$PATH:$GOPATH/bin' >> "$USER_HOME/.zshrc"
+    fi
+    
+    # Create Go directory for the actual user
+    sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/go/bin"
+else
+    # Running as root directly
+    echo 'export GOPATH=$HOME/go' >> /root/.bashrc
+    echo 'export PATH=$PATH:$GOPATH/bin' >> /root/.bashrc
+    mkdir -p /root/go/bin
+fi
+
+# Set up current session
+export GOPATH=${USER_HOME:-/root}/go
+export PATH=$PATH:$GOPATH/bin
+mkdir -p $GOPATH/bin
 
 # Step 3: Install reconnaissance tools
 echo -e "\n${CYAN}${BOLD}[3/5] Installing reconnaissance tools...${NC}"
@@ -229,15 +256,46 @@ chmod +x /usr/local/bin/r3con
 
 # Step 5: Verify installation
 echo -e "\n${CYAN}${BOLD}[5/5] Verifying installation...${NC}"
-which subfinder httpx waybackurls getJS nuclei gowitness r3con > /dev/null 2>&1
 
-if [ $? -eq 0 ]; then
-  echo -e "\n${GREEN}${BOLD}✓ R3CON has been successfully installed!${NC}"
-  echo -e "${YELLOW}Usage: r3con <domain> [params]${NC}"
-  echo -e "${YELLOW}Example: r3con example.com${NC}"
+# Check each tool individually and provide specific feedback
+TOOLS=("subfinder" "httpx" "waybackurls" "getJS" "nuclei" "gowitness" "r3con")
+MISSING_TOOLS=()
+FOUND_TOOLS=()
+
+for tool in "${TOOLS[@]}"; do
+    if command -v "$tool" > /dev/null 2>&1; then
+        FOUND_TOOLS+=("$tool")
+        echo -e "${GREEN}  ✓ $tool found${NC}"
+    else
+        MISSING_TOOLS+=("$tool")
+        echo -e "${YELLOW}  ⚠ $tool not found in PATH${NC}"
+    fi
+done
+
+echo ""
+
+if [ ${#MISSING_TOOLS[@]} -eq 0 ]; then
+    echo -e "${GREEN}${BOLD}✓ R3CON has been successfully installed!${NC}"
+    echo -e "${YELLOW}Usage: r3con <domain> [params]${NC}"
+    echo -e "${YELLOW}Example: r3con example.com${NC}"
 else
-  echo -e "\n${RED}${BOLD}✗ Installation incomplete. Some tools may be missing.${NC}"
-  echo -e "${YELLOW}Please check the error messages above and try again.${NC}"
+    echo -e "${YELLOW}${BOLD}⚠ Installation completed with some tools not found in PATH${NC}"
+    echo -e "${YELLOW}Missing tools: ${MISSING_TOOLS[*]}${NC}"
+    echo -e "${CYAN}${BOLD}To fix PATH issues:${NC}"
+    echo -e "${YELLOW}1. Restart your terminal/shell${NC}"
+    echo -e "${YELLOW}2. Or run: source ~/.bashrc${NC}"
+    echo -e "${YELLOW}3. Or add to your PATH manually:${NC}"
+    USER_HOME=$(eval echo ~${SUDO_USER:-$USER})
+    echo -e "${YELLOW}   export PATH=\$PATH:${USER_HOME}/go/bin${NC}"
+    
+    # Still show r3con is available if it was installed
+    if [[ " ${FOUND_TOOLS[@]} " =~ " r3con " ]]; then
+        echo -e "${GREEN}${BOLD}✓ R3CON script is available!${NC}"
+        echo -e "${YELLOW}Usage: r3con <domain> [params]${NC}"
+        echo -e "${YELLOW}Example: r3con example.com${NC}"
+    fi
 fi
 
 echo -e "\n${CYAN}${BOLD}Thank you for installing R3CON!${NC}"
+echo -e "${YELLOW}${BOLD}Important:${NC} If tools are not found, restart your terminal or run:"
+echo -e "${YELLOW}source ~/.bashrc${NC}"
