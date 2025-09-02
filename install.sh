@@ -254,6 +254,9 @@ EOL
 
 chmod +x /usr/local/bin/r3con
 
+# Fix potential line ending issues
+sed -i 's/\r$//' /usr/local/bin/r3con 2>/dev/null || true
+
 # Step 5: Verify installation
 echo -e "\n${CYAN}${BOLD}[5/5] Verifying installation...${NC}"
 
